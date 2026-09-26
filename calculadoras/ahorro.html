@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Calculadora de ahorro a una meta — Al Año</title>
+  <meta name="description" content="¿En cuántos meses juntas el dinero para un enganche, viaje o compra? Calculadora de ahorro gratis." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Fraunces:opsz,wght@9..144,500;9..144,600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="inner">
+      <a href="../index.html" class="logo">Al <span>Año</span></a>
+      <nav class="nav-links"><a href="../index.html">Inicio</a></nav>
+    </div>
+  </header>
+  <main class="calc-page">
+    <p class="kicker">Calculadora</p>
+    <h1>Ahorro a una meta</h1>
+    <p class="lead">Define cuánto necesitas y cuánto puedes apartar al mes. Te dice en cuánto tiempo llegas.</p>
+    <div class="calc-box">
+      <div class="field">
+        <label for="meta">Meta en pesos (enganche, viaje, equipo…)</label>
+        <input type="number" id="meta" min="0" step="100" value="30000" />
+      </div>
+      <div class="field">
+        <label for="mensual">Cuánto puedes apartar al mes</label>
+        <input type="number" id="mensual" min="0" step="50" value="1500" />
+      </div>
+      <div class="field">
+        <label for="ya">Lo que ya tienes ahorrado (opcional)</label>
+        <input type="number" id="ya" min="0" step="100" value="0" />
+      </div>
+      <button type="button" class="btn btn-primary" id="calcular" style="width:100%">Calcular</button>
+      <div class="result-box" id="resultado">
+        <p class="label">Tiempo estimado para llegar</p>
+        <p class="big" id="anual">—</p>
+        <p class="detail" id="detalle"></p>
+        <div class="share-row">
+          <button type="button" class="btn btn-outline" id="copiar">Copiar resultado</button>
+          <a class="btn btn-ghost" href="../guias/ahorrar-sin-sufrir.html">Guía de ahorro</a>
+        </div>
+      </div>
+    </div>
+    <div class="ad-slot" data-placeholder="true" aria-hidden="true">Espacio para anuncio</div>
+    <article class="prose">
+      <h2>Un número que sí motiva</h2>
+      <p>
+        “Hay que ahorrar” es abstracto. “En 14 meses, si aparto $1,500” es un plan.
+        Si el plazo te parece eterno, sube un poco el apartado mensual o baja la meta
+        en dos etapas (primera meta intermedia).
+      </p>
+      <p>
+        Esta cuenta no incluye intereses ni inflación. Es una estimación lineal para
+        ordenar la cabeza, no un producto bancario.
+      </p>
+    </article>
+  </main>
+  <footer class="site-footer">
+    <div class="inner">
+      <p class="brand">Al Año</p>
+      <p><a href="../privacidad.html">Privacidad</a> · <a href="../aviso-legal.html">Aviso legal</a></p>
+    </div>
+  </footer>
+  <script src="../js/app.js"></script>
+  <script>
+    function calc() {
+      var meta = parseFloat(document.getElementById("meta").value) || 0;
+      var men = parseFloat(document.getElementById("mensual").value) || 0;
+      var ya = parseFloat(document.getElementById("ya").value) || 0;
+      var falta = Math.max(meta - ya, 0);
+      var box = document.getElementById("resultado");
+      if (men <= 0) {
+        document.getElementById("anual").textContent = "Define un apartado mensual";
+        document.getElementById("detalle").textContent = "Sin una cantidad mensual, no hay plazo que calcular.";
+        box.classList.add("show");
+        return;
+      }
+      var meses = Math.ceil(falta / men);
+      var anios = meses / 12;
+      var texto = meses <= 1 ? "1 mes" : meses + " meses";
+      if (meses >= 12) texto += " (≈ " + anios.toFixed(1) + " años)";
+      document.getElementById("anual").textContent = texto;
+      document.getElementById("detalle").textContent =
+        "Te faltan " + AlAno.money(falta) + ". Apartando " + AlAno.money(men) +
+        " al mes, llegas en " + texto + ".";
+      box.classList.add("show");
+      window._shareText = "Para mi meta de " + AlAno.money(meta) + " me faltan unos " + texto + " apartando " + AlAno.money(men) + "/mes (Al Año).";
+    }
+    document.getElementById("calcular").onclick = calc;
+    document.getElementById("copiar").onclick = function () { AlAno.copyText(window._shareText || "", this); };
+    calc();
+  </script>
+</body>
+</html>

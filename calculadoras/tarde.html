@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Calculadora de llegar tarde al año — Al Año</title>
+  <meta name="description" content="Convierte minutos de retraso diarios en horas y días al año. Herramienta gratis de tiempo." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Fraunces:opsz,wght@9..144,500;9..144,600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="inner">
+      <a href="../index.html" class="logo">Al <span>Año</span></a>
+      <nav class="nav-links"><a href="../index.html">Inicio</a></nav>
+    </div>
+  </header>
+  <main class="calc-page">
+    <p class="kicker">Calculadora</p>
+    <h1>Llegar tarde</h1>
+    <p class="lead">Minutos de retraso que se sienten “nada” y al año se convierten en horas enteras.</p>
+    <div class="calc-box">
+      <div class="field">
+        <label for="minutos">Minutos de retraso promedio cada vez</label>
+        <input type="number" id="minutos" min="0" step="1" value="15" />
+      </div>
+      <div class="field">
+        <label for="veces">Veces a la semana que te pasa</label>
+        <input type="number" id="veces" min="0" step="1" value="3" />
+      </div>
+      <div class="field">
+        <label for="semanas">Semanas al año que aplican (trabajo/escuela)</label>
+        <input type="number" id="semanas" min="1" max="52" value="48" />
+        <p class="hint">Si tienes vacaciones o periodos sin esta rutina, baja el número.</p>
+      </div>
+      <button type="button" class="btn btn-primary" id="calcular" style="width:100%">Calcular</button>
+      <div class="result-box" id="resultado">
+        <p class="label">Al año equivalen aproximadamente a</p>
+        <p class="big" id="anual">—</p>
+        <p class="detail" id="detalle"></p>
+        <div class="share-row">
+          <button type="button" class="btn btn-outline" id="copiar">Copiar resultado</button>
+        </div>
+      </div>
+    </div>
+    <div class="ad-slot" data-placeholder="true" aria-hidden="true">Espacio para anuncio</div>
+    <article class="prose">
+      <h2>No es un juicio de carácter</h2>
+      <p>
+        Llegar tarde puede ser tráfico, cuidados de alguien más, insomnio o simple desorden.
+        Esta calculadora no diagnostica nada: solo traduce minutos sueltos a un total anual
+        para que veas el tamaño del hábito.
+      </p>
+      <p>
+        Si el número te molesta, a veces basta con adelantar la alarma 20 minutos o preparar
+        la mochila la noche anterior. El dato sirve para elegir un ajuste pequeño, no para
+        castigarte.
+      </p>
+    </article>
+  </main>
+  <footer class="site-footer">
+    <div class="inner">
+      <p class="brand">Al Año</p>
+      <p><a href="../privacidad.html">Privacidad</a> · <a href="../aviso-legal.html">Aviso legal</a></p>
+    </div>
+  </footer>
+  <script src="../js/app.js"></script>
+  <script>
+    function calc() {
+      var m = parseFloat(document.getElementById("minutos").value) || 0;
+      var v = parseFloat(document.getElementById("veces").value) || 0;
+      var s = parseFloat(document.getElementById("semanas").value) || 0;
+      var minAnio = m * v * s;
+      var horas = minAnio / 60;
+      document.getElementById("anual").textContent = AlAno.hoursToText(horas);
+      document.getElementById("detalle").textContent =
+        "Son " + AlAno.number(minAnio) + " minutos al año (" + AlAno.number(horas) + " horas). " +
+        "En jornadas de 8 horas equivaldría a unas " + AlAno.number(horas / 8) + " jornadas.";
+      document.getElementById("resultado").classList.add("show");
+      window._shareText = "Mis retrasos suman cerca de " + AlAno.hoursToText(horas) + " al año (Al Año).";
+    }
+    document.getElementById("calcular").onclick = calc;
+    document.getElementById("copiar").onclick = function () { AlAno.copyText(window._shareText || "", this); };
+    calc();
+  </script>
+</body>
+</html>

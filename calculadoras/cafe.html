@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Calculadora de café y antojos al año — Al Año</title>
+  <meta name="description" content="Calcula cuánto gastas en café, pan dulce o snacks al mes y al año. Gratis, sin registro." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Fraunces:opsz,wght@9..144,500;9..144,600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="inner">
+      <a href="../index.html" class="logo">Al <span>Año</span></a>
+      <nav class="nav-links"><a href="../index.html">Inicio</a></nav>
+    </div>
+  </header>
+  <main class="calc-page">
+    <p class="kicker">Calculadora</p>
+    <h1>Café y antojos</h1>
+    <p class="lead">El gasto chico del día a día: café de máquina, de cafetería o snacks de camino al trabajo.</p>
+    <div class="calc-box">
+      <div class="field">
+        <label for="veces">Veces al día que compras</label>
+        <input type="number" id="veces" min="0" step="0.5" value="1" />
+      </div>
+      <div class="field">
+        <label for="precio">Precio promedio por compra (pesos)</label>
+        <input type="number" id="precio" min="0" step="1" value="45" />
+        <p class="hint">Café de esquina ~$25–40 · Cafetería de cadena ~$50–90 · Snack ~$20–40</p>
+      </div>
+      <div class="field">
+        <label for="dias">Días a la semana</label>
+        <input type="number" id="dias" min="1" max="7" value="5" />
+      </div>
+      <button type="button" class="btn btn-primary" id="calcular" style="width:100%">Calcular</button>
+      <div class="result-box" id="resultado">
+        <p class="label">Al año gastas aproximadamente</p>
+        <p class="big" id="anual">—</p>
+        <p class="detail" id="detalle"></p>
+        <div class="share-row">
+          <button type="button" class="btn btn-outline" id="copiar">Copiar resultado</button>
+          <a class="btn btn-ghost" href="../guias/gastos-hormiga.html">Guía de gastos hormiga</a>
+        </div>
+      </div>
+    </div>
+    <div class="ad-slot" data-placeholder="true" aria-hidden="true">Espacio para anuncio</div>
+    <article class="prose">
+      <h2>El café no es el villano</h2>
+      <p>
+        Un café puede ser el ritual que te hace tolerable la mañana. El problema no es el gusto:
+        es no saber si ese gusto está costando el equivalente a un fin de semana fuera o a tres meses
+        de una suscripción que sí usas.
+      </p>
+      <p>
+        Prueba calcular dos escenarios: el actual y uno con la mitad de veces por semana.
+        La diferencia anual suele ser más clara que cualquier consejo genérico de “no gastes”.
+      </p>
+    </article>
+  </main>
+  <footer class="site-footer">
+    <div class="inner">
+      <p class="brand">Al Año</p>
+      <p><a href="../privacidad.html">Privacidad</a> · <a href="../aviso-legal.html">Aviso legal</a></p>
+    </div>
+  </footer>
+  <script src="../js/app.js"></script>
+  <script>
+    function calc() {
+      var v = parseFloat(document.getElementById("veces").value) || 0;
+      var p = parseFloat(document.getElementById("precio").value) || 0;
+      var d = parseFloat(document.getElementById("dias").value) || 0;
+      var sem = v * p * d;
+      var mes = sem * (52 / 12);
+      var an = sem * 52;
+      document.getElementById("anual").textContent = AlAno.money(an);
+      document.getElementById("detalle").textContent =
+        "Al mes ≈ " + AlAno.money(mes) + ". Si bajas a la mitad de veces, ahorrarías cerca de " +
+        AlAno.money(an / 2) + " al año.";
+      document.getElementById("resultado").classList.add("show");
+      window._shareText = "En café/antojos me salen cerca de " + AlAno.money(an) + " al año (Al Año).";
+    }
+    document.getElementById("calcular").onclick = calc;
+    document.getElementById("copiar").onclick = function () { AlAno.copyText(window._shareText || "", this); };
+    calc();
+  </script>
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Calculadora de suscripciones streaming al año — Al Año</title>
+  <meta name="description" content="Suma Netflix, Spotify, Disney+ y otras apps. Calcula el total mensual y anual de tus suscripciones." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Fraunces:opsz,wght@9..144,500;9..144,600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="inner">
+      <a href="../index.html" class="logo">Al <span>Año</span></a>
+      <nav class="nav-links"><a href="../index.html">Inicio</a></nav>
+    </div>
+  </header>
+  <main class="calc-page">
+    <p class="kicker">Calculadora</p>
+    <h1>Streaming y apps</h1>
+    <p class="lead">Suma lo que pagas al mes en plataformas. Muchas cuentas “baratas” juntas dejan de serlo.</p>
+    <div class="calc-box">
+      <div class="field">
+        <label for="total">Total que pagas al mes en suscripciones (pesos)</label>
+        <input type="number" id="total" min="0" step="10" value="450" />
+        <p class="hint">Incluye video, música, almacenamiento, gimnasio virtual, revistas, etc.</p>
+      </div>
+      <div class="field">
+        <label for="usadas">¿Cuántas usas de verdad al menos 1 vez por semana?</label>
+        <input type="number" id="usadas" min="0" step="1" value="2" />
+      </div>
+      <div class="field">
+        <label for="activas">¿Cuántas tienes activas en total?</label>
+        <input type="number" id="activas" min="0" step="1" value="4" />
+      </div>
+      <button type="button" class="btn btn-primary" id="calcular" style="width:100%">Calcular</button>
+      <div class="result-box" id="resultado">
+        <p class="label">Al año pagas aproximadamente</p>
+        <p class="big" id="anual">—</p>
+        <p class="detail" id="detalle"></p>
+        <div class="share-row">
+          <button type="button" class="btn btn-outline" id="copiar">Copiar resultado</button>
+          <a class="btn btn-ghost" href="../guias/suscripciones-olvidadas.html">Guía de suscripciones</a>
+        </div>
+      </div>
+    </div>
+    <div class="ad-slot" data-placeholder="true" aria-hidden="true">Espacio para anuncio</div>
+    <article class="prose">
+      <h2>La trampa de los $99 al mes</h2>
+      <p>
+        Cada servicio parece barato. Tres o cuatro juntos ya son una renta chica en algunas ciudades
+        del interior, o varios tanques de gasolina. La calculadora no te dice qué cancelar:
+        te muestra el total para que compares con lo que sí usas.
+      </p>
+      <p>
+        Una regla práctica: revisa el estado de cuenta o el correo de recibos cada trimestre.
+        Si no abriste la app en 30 días, es candidata a pausa o cancelación.
+      </p>
+    </article>
+  </main>
+  <footer class="site-footer">
+    <div class="inner">
+      <p class="brand">Al Año</p>
+      <p><a href="../privacidad.html">Privacidad</a> · <a href="../aviso-legal.html">Aviso legal</a></p>
+    </div>
+  </footer>
+  <script src="../js/app.js"></script>
+  <script>
+    function calc() {
+      var t = parseFloat(document.getElementById("total").value) || 0;
+      var u = parseFloat(document.getElementById("usadas").value) || 0;
+      var a = parseFloat(document.getElementById("activas").value) || 0;
+      var an = t * 12;
+      var desperdicio = a > 0 && u < a ? Math.round(((a - u) / a) * 100) : 0;
+      document.getElementById("anual").textContent = AlAno.money(an);
+      document.getElementById("detalle").textContent =
+        "Al mes " + AlAno.money(t) + ". Si solo usas " + u + " de " + a +
+        " servicios, podrías estar pagando sin usar cerca del " + desperdicio + "% del total.";
+      document.getElementById("resultado").classList.add("show");
+      window._shareText = "En suscripciones pago cerca de " + AlAno.money(an) + " al año (Al Año).";
+    }
+    document.getElementById("calcular").onclick = calc;
+    document.getElementById("copiar").onclick = function () { AlAno.copyText(window._shareText || "", this); };
+    calc();
+  </script>
+</body>
+</html>

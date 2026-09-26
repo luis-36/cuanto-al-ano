@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Calculadora de cigarros o vape al año — Al Año</title>
+  <meta name="description" content="Calcula cuánto gastas en cigarros o vape al mes y al año. Herramienta gratis para México y LATAM." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Fraunces:opsz,wght@9..144,500;9..144,600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="inner">
+      <a href="../index.html" class="logo">Al <span>Año</span></a>
+      <nav class="nav-links"><a href="../index.html">Inicio</a><a href="../index.html#guias">Guías</a></nav>
+    </div>
+  </header>
+
+  <main class="calc-page">
+    <p class="kicker">Calculadora</p>
+    <h1>Cigarros o vape</h1>
+    <p class="lead">Pon lo que consumes en un día típico y el precio que pagas. Verás el total al mes y al año.</p>
+
+    <div class="calc-box">
+      <div class="field">
+        <label for="unidades">Unidades al día (cigarros o caladas equivalentes)</label>
+        <input type="number" id="unidades" min="0" step="1" value="8" />
+        <p class="hint">Si compras cajetillas, divide cigarrillos de la cajetilla entre los días que te dura.</p>
+      </div>
+      <div class="field">
+        <label for="precio">Precio por unidad (pesos)</label>
+        <input type="number" id="precio" min="0" step="0.5" value="5" />
+        <p class="hint">Ejemplo: cajetilla de $80 con 20 cigarros ≈ $4 por cigarro. Ajusta a tu marca.</p>
+      </div>
+      <div class="field">
+        <label for="dias">Días que consumes a la semana</label>
+        <input type="number" id="dias" min="1" max="7" value="7" />
+      </div>
+      <button type="button" class="btn btn-primary" id="calcular" style="width:100%">Calcular</button>
+
+      <div class="result-box" id="resultado">
+        <p class="label">Al año gastas aproximadamente</p>
+        <p class="big" id="anual">—</p>
+        <p class="detail" id="detalle"></p>
+        <div class="share-row">
+          <button type="button" class="btn btn-outline" id="copiar">Copiar resultado</button>
+          <a class="btn btn-ghost" href="../guias/cuanto-cuesta-fumar.html">Leer la guía</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="ad-slot" data-placeholder="true" aria-hidden="true">Espacio para anuncio</div>
+
+    <article class="prose">
+      <h2>Para qué sirve este número</h2>
+      <p>
+        No está pensado para darte culpa. Está pensado para que veas la <strong>magnitud</strong>.
+        Muchas personas subestiman el gasto porque pagan de a poco: una cajetilla, un pod, un recargo.
+        Al sumar 12 meses, el total compite con vacaciones, un enganche o varios meses de renta en algunas ciudades.
+      </p>
+      <p>
+        Los precios varían por país, marca e impuestos. En México una cajetilla puede ir de unos $50 a más de $100
+        según marca y punto de venta. Usa el precio que <em>tú</em> pagas, no el de un promedio de internet.
+      </p>
+      <h2>Si quieres bajar el gasto</h2>
+      <ul>
+        <li>Reduce días a la semana antes de intentar “dejar del todo” de un golpe.</li>
+        <li>Anota una semana real (no ideal) y vuelve a calcular.</li>
+        <li>Compara el total anual con una meta concreta: viaje, deuda, equipo de trabajo.</li>
+      </ul>
+      <p>
+        Si fumas y te preocupa la salud, consulta fuentes médicas serias o un profesional.
+        Esta herramienta solo habla de dinero y frecuencia.
+      </p>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="inner">
+      <p class="brand">Al Año</p>
+      <p><a href="../privacidad.html">Privacidad</a> · <a href="../aviso-legal.html">Aviso legal</a> · <a href="../sobre.html">Sobre</a></p>
+    </div>
+  </footer>
+
+  <script src="../js/app.js"></script>
+  <script>
+    function calc() {
+      var u = parseFloat(document.getElementById("unidades").value) || 0;
+      var p = parseFloat(document.getElementById("precio").value) || 0;
+      var d = parseFloat(document.getElementById("dias").value) || 0;
+      var diario = u * p;
+      var semanal = diario * d;
+      var mensual = semanal * (52 / 12);
+      var anual = semanal * 52;
+      document.getElementById("anual").textContent = AlAno.money(anual);
+      document.getElementById("detalle").textContent =
+        "Al mes ≈ " + AlAno.money(mensual) + " · Al día (promedio) ≈ " + AlAno.money(anual / 365) +
+        ". En 5 años serían cerca de " + AlAno.money(anual * 5) + ".";
+      document.getElementById("resultado").classList.add("show");
+      window._shareText =
+        "Si mantengo este ritmo, en cigarros/vape me gasto cerca de " +
+        AlAno.money(anual) + " al año. Calculado en Al Año.";
+    }
+    document.getElementById("calcular").addEventListener("click", calc);
+    document.getElementById("copiar").addEventListener("click", function () {
+      AlAno.copyText(window._shareText || "", this);
+    });
+    calc();
+  </script>
+</body>
+</html>
